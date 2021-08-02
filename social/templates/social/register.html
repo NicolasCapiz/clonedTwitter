@@ -1,0 +1,12 @@
+{%extends 'social/layout.html'%} {%block content%}
+<!--Uso enctype="multipart/form-data para que el formulario soporte imagenes -->
+<form class="form" method='post' enctype="multipart/form-data">
+
+    {%csrf_token%} {{form.as_p}}
+
+    <button type="submit" id="submit">Register</button>
+
+</form>
+
+
+{% endblock %}

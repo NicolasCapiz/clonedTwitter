@@ -1,0 +1,49 @@
+{% extends 'social/layout.html' %} {% block content %}{% load humanize %}
+
+<!-- Profile -->
+<div class="profile">
+    <img src="{{user.profile.image.url}}">
+    <h2>@{{user.username}}</h2>
+    <!--Comprobamos si el usuario inicio sesion-->
+    {% if request.user.is_authenticated %}
+    <!--Verificamos que el usuario que inicio sesion sea distinto al perfil que estamos-->
+    {% if user.username != request.user.username %} {% if user not in request.user.profile.following %}
+    <button><a class="follow-button" href="{% url 'follow' user %}">Follow</a></button> {% else %}
+    <button><a class="follow-button" href="{% url 'unfollow' user %}">Unfollow</a></button> {% endif %} {% endif %} {% endif %}
+</div>
+
+<!-- Follow items -->
+<div class="follow">
+    <div>
+        <h5>Post</h5>
+        <!--Count es una funcion de django-->
+        <p>{{user.posts.count}}</p>
+    </div>
+    <div>
+        <h5>Followers</h5>
+        <p>{{user.profile.followers.count}}</p>
+
+    </div>
+    <div>
+        <h5>Following</h5>
+        <p>{{user.profile.following.count}}</p>
+    </div>
+</div>
+
+{% for post in posts %}
+<article>
+    <div class="container-article">
+
+        <img src='{{post.user.profile.image.url}}' alt="imagen de perfil">
+        <div>
+            <h2 class="username"><a href="{% url 'profile' post.user.username %}">{{post.user.username}}</a></h2>
+            <i class="clock"></i>
+            <time data-time="#">{{post.timestamp|naturaltime}}</time>
+            <div class="post">{{post.content}}</div>
+        </div>
+    </div>
+    {% if request.user.is_authenticated %} {% if user.username == request.user.username %}
+    <a class='button modificar' href="{% url 'modificarPost' post.id %}">Modificar Tweet</a>
+    <a class='button eliminar' href="{% url 'eliminarPost' post.id %}">Eliminar Tweet</a> {% endif %}{% endif%}
+</article>
+{% endfor %}{% endblock %}

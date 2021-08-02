@@ -1,0 +1,10 @@
+{%extends 'social/layout.html'%} {% block content %}
+
+
+<form action='{% url "eliminarPost" post.id%}' method="POST">
+    {%csrf_token%}
+    <p>Estas seguro que queres eliminar este Tweet?</p>
+    <a href="{% url 'feed' %}">Cancelar</a>
+    <button type="submit" class="post">Confirmar</button>
+</form>
+{%endblock%}
